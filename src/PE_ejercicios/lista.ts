@@ -1,69 +1,65 @@
 /**
- * Clase generica para operaciones entre listas 
+ * Clase para funciones de listas
  */
 export class List<T> {
 	/**
-	 * listas privadas
+	 * Privado
 	 */
   private items: T[];
 
 	/**
-	 * constructor de la clase Lista
+	 * Constructor
 	 */
-  constructor() {
-    this.items = [];
+  constructor(initialItems: T[] = []) {
+    this.items = initialItems;
   }
 
-	/**
-	 * 
-	 * @param list2 - lista a la cual concatenar con la que llama a la funcion
-	 */
+  /**
+   * Método para añadir elementos al final de la lista
+   * @param list2 - Lista a la cual juntar
+   */
   appendMethod(list2: T[]): void {
-    for (let element of list2) {
-      this.items[this.items.length] = element;
+    for (const element of list2) {
+      this.items[this.lengthMethod()] = element;  
     }
   }
 
-	/**
-	 * 
-	 * @param lists - listas para ser concatenadas con la que llama a la funcion
-	 * @returns - lista con todos los elementos concatenados
-	 */
-  concatenateMethod<T>(lists: T[][]): T[] {
-    let result: T[] = [];
-		lists.forEach((list) => {
-			for (let element of list) {
-				result[result.length] = element;
-			}
-		}); 
+  /**
+   * Método para concatenar varias listas
+   * @returns Nueva lista concatenada
+   */
+  concatenateMethod(): List<T> {
+    let result = new List<T>(this.items);
+    for (const element of this.items) {
+			result.appendMethod(element)
+		}
     return result;
   }
 
-	/**
-	 * 
-	 * @param list - lista a la cual hacer el filtro
-	 * @param predicate - predicado logico
-	 * @returns - lista de elementos que cumplen el predicado
-	 */
-  filterMethod<T>(list: T[], predicate: (item: T) => boolean): T[] {
-    let result: T[] = [];
-    for (let element of list) {
+  /**
+   * Método para filtrar elementos de la lista según un predicado
+   * @param predicate - predicado lógico
+   * @returns Nueva lista con los elementos que cumplen el predicado
+   */
+  filterMethod(predicate: (item: T) => boolean): List<T> {
+    let result = new List<T>();
+    for (let element of this.items) {
       if (predicate(element)) {
-        result[result.length] = element;
+        result.appendMethod([element]);  
       }
     }
     return result;
   }
-	
-	/**
-	 * @param list - lista a la cual sacar la longitud
-	 * @returns - numero de longitud
-	 */
-	lengthMethod<T>(list: T[]): number {
-		let final = 0; 
-		for (let element of list) {
-			++final
-		}
-		return final; 
-	}
+
+  /**
+   * Método para obtener la longitud de la lista
+   * @returns Número de elementos en la lista
+   */
+  lengthMethod(): number {
+    let final = 0;
+    for (let element of this.items) {
+      ++final;
+    }
+    return final;
+  }
 }
